@@ -5,9 +5,11 @@ using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
+
     public enum GameState {  GameOver, GameStart, GameIdle};
     public static GameState CurrentState = GameState.GameIdle;
 
+    public static GameManager thisGameManager;
     public static int Lives = 3;
     public static int Score = 0;
 
@@ -17,10 +19,16 @@ public class GameManager : MonoBehaviour
         Score = 0;
         Time.timeScale = 0;
         CurrentState = GameState.GameIdle;
+        thisGameManager = this;
     }
     
     void Update()
     {
+        if(Lives == 0)
+        {
+            HUD.HUDManager.GameOver();
+            
+        }
         if(CurrentState == GameState.GameIdle && Input.GetKeyDown(KeyCode.Return))
         {            
             CurrentState = GameState.GameStart;
@@ -32,5 +40,14 @@ public class GameManager : MonoBehaviour
         {
             SceneManager.LoadScene(0);
         }
+    }
+
+    public void Life()
+    {
+        Lives -= 1;
+    }
+    public void score()
+    {
+        Score++;
     }
 }

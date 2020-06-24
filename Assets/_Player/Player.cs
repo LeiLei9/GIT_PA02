@@ -14,6 +14,8 @@ public class Player : MonoBehaviour
     private Animator thisAnimator = null;
 
     private float moveSpeed = 0.05f;
+    public GameObject fire;
+
 
     void Start()
     {
@@ -52,6 +54,16 @@ public class Player : MonoBehaviour
 
         thisController.Move(MoveDirection);
         transform.position = new Vector3(Mathf.Clamp(transform.position.x, -1.5f, 1.5f), transform.position.y, transform.position.z);
+    }
+    private void OnTriggerEnter(Collider other)
+    {
+        if(other.tag=="Obstacle")
+        {
+            GameObject Firecolne = Instantiate(fire, new Vector3(0, 0.1f, -7), Quaternion.identity);
+            Destroy(Firecolne, 0.5f);
+            HUD.HUDManager.UpdateLives();
+            Destroy(other.gameObject);
+        }
     }
 
 }
